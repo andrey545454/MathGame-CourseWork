@@ -1,0 +1,47 @@
+form.frm {
+  background: #f8f4e5;
+  padding: 50px 100px;
+  border: 2px solid black;
+  box-shadow: 15px 15px 1px #ffa580, 15px 15px 1px 2px black; }
+
+button.frm-btn {
+  display: block;
+  margin: 0 auto;
+  line-height: 28pt;
+  padding: 0 20px;
+  background: #ffa580;
+  letter-spacing: 2px;
+  transition: .2s all ease-in-out;
+  outline: none;
+  border: 1px solid black;
+  box-shadow: 3px 3px 1px #95a4ff, 3px 3px 1px 1px black; }
+
+button.frm-btn:hover {
+  background: #ffc9b2;
+  border: 1px solid black; }
+
+a.frm-btn {
+  display: block;
+  margin: 0 auto;
+  line-height: 28pt;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #333333;
+  background: white;
+  letter-spacing: 2px;
+  transition: .2s all ease-in-out;
+  outline: none;
+  border: 1px solid black;
+  box-shadow: 3px 3px 1px #95a4ff, 3px 3px 1px 1px black; }
+
+a.frm-btn.active {
+  background: #ffa580;
+}
+
+a.frm-btn.primary {
+  background: #80daff
+}
+
+a.frm-btn:hover {
+  background: #ffa580;
+  border: 1px solid black; }

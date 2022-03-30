@@ -21,3 +21,15 @@ def register(request):
 
 def index(request):
     return render(request, 'index.html')
+
+
+def games(request):
+    return render(request, 'games.html')
+
+
+def teams(request):
+    return render(request, 'teams.html')
+
+
+def profile(request):
+    return render(request, 'profile.html')

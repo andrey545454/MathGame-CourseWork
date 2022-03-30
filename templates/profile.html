@@ -2,10 +2,10 @@
 
 {% block navbar %}
     <form class="form-inline mr-auto">
-        <a href="{% url 'index' %}" class="frm-btn active" role="button">Главная</a>
+        <a href="{% url 'index' %}" class="frm-btn" role="button">Главная</a>
         <a href="{% url 'games' %}" class="frm-btn" role="button">Игры</a>
         <a href="{% url 'teams' %}" class="frm-btn" role="button">Мои команды</a>
-        <a href="{% url 'profile' %}" class="frm-btn" role="button">Профиль</a>
+        <a href="{% url 'profile' %}" class="frm-btn active" role="button">Профиль</a>
     </form>
 {% endblock %}
 
