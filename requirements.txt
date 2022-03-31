@@ -3,3 +3,4 @@ gunicorn
 django-heroku
 dj_database_url
 django-crispy-forms
+django_extensions
