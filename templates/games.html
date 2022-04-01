@@ -14,4 +14,27 @@
 {% endblock %}
 
 {% block content %}
+    <div class="frm">
+        <div class="card-body">
+            <h1 class="card-title">Предстоящие игры</h1>
+            <table class="table">
+                <tr>
+                    <th>Игра</th>
+                    <th>Время начала</th>
+                    <th>Время окончания</th>
+                    <th>Регистрация</th>
+                </tr>
+                <tbody>
+                    {% for game in games %}
+                        <tr>
+                            <td><strong>{{ game }}</strong></td>
+                            <td>{{ game.start_time }}</td>
+                            <td>{{ game.end_time }}</td>
+                            <td><a href="{% url 'selected_game' game.pk %}" class="frm-btn" role="button">Участвовать</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -1,8 +1,10 @@
 from django.http import HttpResponse
 from django.contrib.auth import login, logout
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import RegisterForm
+from .models import *
 
 # Create your views here.
 
@@ -24,12 +26,23 @@ def index(request):
 
 
 def games(request):
-    return render(request, 'games.html')
+    g = Game.objects.all()
+    return render(request, 'games.html', {'games': g})
 
 
+@login_required
+def selected_game(request, pk):
+    g = Game.objects.all()
+    print(pk)
+    return render(request, 'games.html', {'games': g})
+
+
+@login_required
 def teams(request):
-    return render(request, 'teams.html')
+    teams = Team.objects.filter(players__user=request.user)
+    return render(request, 'teams.html', {'teams': teams})
 
 
+@login_required
 def profile(request):
     return render(request, 'profile.html')
