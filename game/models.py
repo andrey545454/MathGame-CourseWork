@@ -21,7 +21,7 @@ class Player(models.Model):
     status = models.ForeignKey(PlayerStatus, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f'[{self.user.id}] {self.user.first_name} {self.user.last_name}'
+        return f'{self.user.first_name} {self.user.last_name}'
 
 
 class TeamStatus(models.Model):
@@ -40,7 +40,7 @@ class Team(models.Model):
     status = models.ForeignKey(TeamStatus, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f'[{self.id}] {self.name}'
+        return self.name
 
 
 class Author(models.Model):
