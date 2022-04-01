@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}
     <title>Профиль</title>
 {% endblock %}
@@ -14,4 +16,9 @@
 {% endblock %}
 
 {% block content %}
+     <form method="POST" class="frm">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="frm-btn">Сохранить изменения</button>
+    </form>
 {% endblock %}

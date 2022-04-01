@@ -1,9 +1,9 @@
 from django.http import HttpResponse
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import RegisterForm
+from .forms import RegisterForm, UpdateForm
 from .models import *
 
 # Create your views here.
@@ -44,5 +44,20 @@ def teams(request):
 
 
 @login_required
+def selected_team(request, pk):
+    team = Team.objects.get(pk=pk)
+    print(team)
+    return render(request, 'teams.html')
+
+
+@login_required
 def profile(request):
-    return render(request, 'profile.html')
+    if request.method == 'POST':
+        form = UpdateForm(data=request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.instance)
+            return redirect('/')
+    else:
+        form = UpdateForm(instance=request.user)
+    return render(request, 'profile.html', {'form': form})
