@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}
     <title>Мои команды</title>
 {% endblock %}
@@ -16,20 +18,12 @@
 {% block content %}
     <div class="frm">
         <div class="card-body">
-            <h1 class="card-title">Доступные команды</h1>
-            <table class="table">
-                <tr>
-                    <th>Команда</th>
-                </tr>
-                <tbody>
-                    {% for team in teams %}
-                        <tr>
-                            <td><strong>{{ team }}</strong></td>
-                            <td><a href="{% url 'selected_team' team.pk %}" class="frm-btn" role="button">Состав</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h1 class="card-title mr-auto">Добавление игрока в команду</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="frm-btn">Создать</button>
+            </form>
         </div>
     </div>
 {% endblock %}

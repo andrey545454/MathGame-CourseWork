@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Мои команды</title>
+{% endblock %}
+
+{% block navbar %}
+    <form class="form-inline mr-auto">
+        <a href="{% url 'index' %}" class="frm-btn" role="button">Главная</a>
+        <a href="{% url 'games' %}" class="frm-btn" role="button">Игры</a>
+        <a href="{% url 'teams' %}" class="frm-btn active" role="button">Мои команды</a>
+        <a href="{% url 'profile' %}" class="frm-btn" role="button">Профиль</a>
+    </form>
+{% endblock %}
+
+{% block content %}
+    <div class="frm">
+        <div class="card-body">
+            <h1 class="card-title mr-auto">Создание новой команды</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="frm-btn">Создать</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

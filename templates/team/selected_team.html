@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Мои команды</title>
+{% endblock %}
+
+{% block navbar %}
+    <form class="form-inline mr-auto">
+        <a href="{% url 'index' %}" class="frm-btn" role="button">Главная</a>
+        <a href="{% url 'games' %}" class="frm-btn" role="button">Игры</a>
+        <a href="{% url 'teams' %}" class="frm-btn active" role="button">Мои команды</a>
+        <a href="{% url 'profile' %}" class="frm-btn" role="button">Профиль</a>
+    </form>
+{% endblock %}
+
+{% block content %}
+    <div class="frm">
+        <div class="card-body">
+            <form class="form-inline">
+                <h1 class="card-title">{{ team.name }}</h1>
+                {% if cur_player == captain %}
+                    <a href="{% url 'add_player' team.pk%}" class="frm-btn" role="button">Пригласить игрока</a>
+                {% endif %}
+            </form>
+            <table class="table">
+                <tr>
+                    <th>Состав</th>
+                </tr>
+                <tbody>
+                    {% for player in players %}
+                        <tr>
+                            {% if player == cur_player %}
+                                <td><strong>{{ player }} (Вы)</strong></td>
+                            {% else %}
+                                <td>{{ player }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
