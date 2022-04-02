@@ -36,11 +36,21 @@ class TeamStatus(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    players = models.ManyToManyField(Player)
+    captain = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
+
+    players = models.ManyToManyField(Player, related_name='team_players')
     status = models.ForeignKey(TeamStatus, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.name
+
+
+class Invite(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
+    team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return f'{self.player.user.username}-{self.team.name}'
 
 
 class Author(models.Model):
@@ -83,7 +93,7 @@ class Game(models.Model):
 
 
 class ProblemInGame(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
     pos = models.IntegerField()
 
@@ -101,7 +111,7 @@ class ProblemInGameAdmin(admin.ModelAdmin):
 
 
 class Participation(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
     users = models.ManyToManyField(Player)
 
@@ -110,7 +120,7 @@ class Participation(models.Model):
 
 
 class Score(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
     score = models.IntegerField()
 
