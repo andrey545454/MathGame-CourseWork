@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'team/teams.html' %}
 
 {% load crispy_forms_tags %}
 
@@ -6,14 +6,6 @@
     <title>Мои команды</title>
 {% endblock %}
 
-{% block navbar %}
-    <form class="form-inline mr-auto">
-        <a href="{% url 'index' %}" class="frm-btn" role="button">Главная</a>
-        <a href="{% url 'games' %}" class="frm-btn" role="button">Игры</a>
-        <a href="{% url 'teams' %}" class="frm-btn active" role="button">Мои команды</a>
-        <a href="{% url 'profile' %}" class="frm-btn" role="button">Профиль</a>
-    </form>
-{% endblock %}
 
 {% block content %}
     <div class="frm">

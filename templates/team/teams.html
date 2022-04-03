@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     <title>Мои команды</title>
@@ -16,25 +17,31 @@
 {% block content %}
     <div class="frm">
         <div class="card-body">
-            <form class="form-inline">
+            <div class="d-flex">
                 <h1 class="card-title mr-auto">Доступные команды</h1>
-                <a href="{% url 'create_team' %}" class="frm-btn" role="button">Создать новую</a>
-            </form>
-
-            <table class="table">
-                <tr>
-                    <th>Команда</th>
-                    <th class="col-2"></th>
-                </tr>
-                <tbody>
-                    {% for team in teams %}
-                        <tr>
-                            <td><strong>{{ team }}</strong></td>
-                            <td><a href="{% url 'selected_team' team.pk %}" class="frm-btn" role="button">Состав</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <form class="form-inline">
+                    <a href="{% url 'create_team' %}" class="frm-btn" role="button">Создать новую</a>
+                    <a href="{% url 'invites' %}" class="frm-btn" role="button">Приглашения</a>
+                </form>
+            </div>
+            {% if teams %}
+                <table class="table">
+                    <tr>
+                        <th>Команда</th>
+                        <th class="col-2"></th>
+                    </tr>
+                    <tbody>
+                        {% for team in teams %}
+                            <tr>
+                                <td><strong>{{ team }}</strong></td>
+                                <td><a href="{% url 'selected_team' team.pk %}" class="frm-btn" role="button">Состав</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Нет доступных команд! Попробуйте создать свою команду или примите приглашение от другой</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

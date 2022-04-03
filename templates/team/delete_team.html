@@ -1,0 +1,14 @@
+{% extends 'team/teams.html' %}
+
+{% block content %}
+    <div class="frm">
+        <div class="card-body">
+            <h1 class="card-title mr-auto">Удаление команды {{ name }}</h1>
+            <form class="form-inline" method="POST">
+                {% csrf_token %}
+                <a href="{% url 'teams' %}" class="frm-btn" role="button">Отмена</a>
+                <button type="submit" class="frm-btn">Удалить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'team/teams.html' %}
+
+{% block content %}
+    <div class="frm">
+        <div class="card-body">
+            <h1 class="card-title">Приглашения</h1>
+            {% if teams %}
+                <table class="table">
+                    <tr>
+                        <th>Команда</th>
+                        <th class="col-2"></th>
+                    </tr>
+                    <tbody>
+                        {% for team in teams %}
+                            <tr>
+                                <td><strong>{{ team }}</strong></td>
+                                <td><a href="{% url 'selected_team' team.pk %}" class="frm-btn" role="button">Принять</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Нет доступных приглашений! Попробуйте зайти сюда позже</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

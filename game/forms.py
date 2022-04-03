@@ -10,8 +10,7 @@ from .models import *
 
 class RegisterForm(UserCreationForm):
     """
-    A form that creates a user, with no privileges, from the given username and
-    password.
+    Форма для регистрация пользователя
     """
 
     first_name = forms.CharField(label=_('Имя'))
@@ -33,8 +32,7 @@ class RegisterForm(UserCreationForm):
 
 class UpdateForm(UserChangeForm):
     """
-    A form that updates a user, with no privileges, from the given username and
-    password.
+    Форма для обновления пользователя
     """
 
     first_name = forms.CharField(label=_('Имя'))
@@ -48,7 +46,7 @@ class UpdateForm(UserChangeForm):
 
 class CreateTeamForm(forms.ModelForm):
     """
-    A form that creates a team.
+    Форма для создания команды
     """
 
     name = forms.CharField(label=_('Название команды'))
@@ -64,7 +62,7 @@ class CreateTeamForm(forms.ModelForm):
 
 class AddPlayerForm(forms.Form):
     """
-    A form that creates a team.
+    Форма добавления пользователя в команду
     """
 
     username = forms.CharField(label=_('Логин игрока'))
@@ -78,3 +76,18 @@ class AddPlayerForm(forms.Form):
 
         return data
 
+
+class RegToGameForm(forms.ModelForm):
+    """
+    Форма регистрации команды в игру
+    """
+
+    team = forms.ChoiceField(label=_('Команда'), widget=forms.Select(attrs={'id': 'team'}))
+    players = forms.MultipleChoiceField(label=_('Игроки'), widget=forms.SelectMultiple(attrs={'id': 'users'}))
+
+    class Meta:
+        model = Participation
+        fields = ['game', 'team', 'players']
+        widgets = {
+            'game': forms.HiddenInput(),
+        }

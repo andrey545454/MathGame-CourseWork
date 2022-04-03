@@ -16,21 +16,29 @@
 {% block content %}
     <div class="frm">
         <div class="card-body">
-            <h1 class="card-title">Предстоящие игры</h1>
+            <h1 class="card-title">Список игр</h1>
             <table class="table">
                 <tr>
                     <th class="col-4">Игра</th>
                     <th class="col-2">Время начала</th>
                     <th class="col-2">Время окончания</th>
-                    <th class="col-2">Регистрация</th>
+                    <th class="col-2"></th>
                 </tr>
                 <tbody>
-                    {% for game in games %}
+                    {% for game in started_games %}
                         <tr>
                             <td><strong>{{ game }}</strong></td>
                             <td>{{ game.start_time }}</td>
                             <td>{{ game.end_time }}</td>
-                            <td><a href="{% url 'selected_game' game.pk %}" class="frm-btn" role="button">Участвовать</a></td>
+                            <td><a href="{% url 'reg_to_game' game.pk %}" class="frm-btn" role="button">Войти</a></td>
+                        </tr>
+                    {% endfor %}
+                    {% for game in not_started_games %}
+                        <tr>
+                            <td><strong>{{ game }}</strong></td>
+                            <td>{{ game.start_time }}</td>
+                            <td>{{ game.end_time }}</td>
+                            <td><a href="{% url 'reg_to_game' game.pk %}" class="frm-btn" role="button">Зарегистрироваться</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

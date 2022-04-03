@@ -18,7 +18,7 @@
 {% block content %}
     <div class="frm">
         <div class="card-body">
-            <h1 class="card-title mr-auto">{{ user.username }}</h1>
+            <h1 class="card-title">{{ user.username }}</h1>
             <form method="POST">
                 {% csrf_token %}
                 {{ form|crispy }}

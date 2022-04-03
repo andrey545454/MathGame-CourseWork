@@ -49,6 +49,11 @@ class Invite(models.Model):
     player = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
     team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['player', 'team'], name='unique_invite')
+        ]
+
     def __str__(self):
         return f'{self.player.user.username}-{self.team.name}'
 
