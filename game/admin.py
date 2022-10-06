@@ -5,8 +5,6 @@ from .models import *
 
 admin.site.register(PlayerStatus)
 admin.site.register(Player)
-admin.site.register(TeamStatus)
-admin.site.register(Team)
 admin.site.register(Author)
 admin.site.register(ProblemStatus)
 admin.site.register(Problem)

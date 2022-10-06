@@ -44,20 +44,20 @@ class UpdateForm(UserChangeForm):
         fields = ['first_name', 'last_name']
 
 
-class CreateTeamForm(forms.ModelForm):
-    """
-    Форма для создания команды
-    """
-
-    name = forms.CharField(label=_('Название команды'))
-
-    class Meta:
-        model = Team
-        fields = ['name', 'captain', 'status']
-        widgets = {
-            'captain': forms.HiddenInput(),
-            'status': forms.HiddenInput()
-        }
+# class CreateTeamForm(forms.ModelForm):
+#     """
+#     Форма для создания команды
+#     """
+#
+#     name = forms.CharField(label=_('Название команды'))
+#
+#     class Meta:
+#         model = Team
+#         fields = ['name', 'captain', 'status']
+#         widgets = {
+#             'captain': forms.HiddenInput(),
+#             'status': forms.HiddenInput()
+#         }
 
 
 class AddPlayerForm(forms.Form):
@@ -82,12 +82,14 @@ class RegToGameForm(forms.ModelForm):
     Форма регистрации команды в игру
     """
 
-    team = forms.ChoiceField(label=_('Команда'), widget=forms.Select(attrs={'id': 'team'}))
+    # team = forms.ChoiceField(label=_('Команда'), widget=forms.Select(attrs={'id': 'team'}))
     players = forms.MultipleChoiceField(label=_('Игроки'), widget=forms.SelectMultiple(attrs={'id': 'users'}))
 
     class Meta:
         model = Participation
-        fields = ['game', 'team', 'players']
+        fields = ['game',
+                  # 'team',
+                  'players']
         widgets = {
             'game': forms.HiddenInput(),
         }
