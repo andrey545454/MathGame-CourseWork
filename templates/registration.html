@@ -6,18 +6,6 @@
     <title>Регистрация аккаунта</title>
 {% endblock %}
 
-
-{% block navbar-auth%}
-    <form class="form-inline">
-        {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" class="frm-btn" role="button">Выход</a>
-        {% else %}
-            <a href="{% url 'login' %}" class="frm-btn" role="button">Вход</a>
-            <a href="{% url 'register' %}" class="frm-btn active" role="button">Регистрация</a>
-        {% endif %}
-    </form>
-{% endblock %}
-
 {% block content %}
     <form method="POST" class="frm">
         {% csrf_token %}
