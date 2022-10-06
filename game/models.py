@@ -17,45 +17,45 @@ class PlayerStatus(models.Model):
 
 
 class Player(models.Model):
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     status = models.ForeignKey(PlayerStatus, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
 
 
-class TeamStatus(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = 'Team statuses'
-
-
-class Team(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    captain = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
-
-    players = models.ManyToManyField(Player, related_name='team_players')
-    status = models.ForeignKey(TeamStatus, on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return self.name
+# class TeamStatus(models.Model):
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name_plural = 'Team statuses'
 
 
-class Invite(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
-    team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
+# class Team(models.Model):
+#     name = models.CharField(max_length=100, unique=True)
+#     captain = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
+#
+#     players = models.ManyToManyField(Player, related_name='team_players')
+#     status = models.ForeignKey(TeamStatus, on_delete=models.DO_NOTHING)
+#
+#     def __str__(self):
+#         return self.name
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['player', 'team'], name='unique_invite')
-        ]
 
-    def __str__(self):
-        return f'{self.player.user.username}-{self.team.name}'
+# class Invite(models.Model):
+#     player = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
+#     team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
+#
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(fields=['player', 'team'], name='unique_invite')
+#         ]
+#
+#     def __str__(self):
+#         return f'{self.player.user.username}-{self.team.name}'
 
 
 class Author(models.Model):
@@ -98,7 +98,7 @@ class Game(models.Model):
 
 
 class ProblemInGame(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
     problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
     pos = models.IntegerField()
 
@@ -116,8 +116,8 @@ class ProblemInGameAdmin(admin.ModelAdmin):
 
 
 class Participation(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
+    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
+    # team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
     users = models.ManyToManyField(Player)
 
     def __str__(self):
@@ -125,8 +125,8 @@ class Participation(models.Model):
 
 
 class Score(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
+    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
+    # team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
     score = models.IntegerField()
 
     def __str__(self):
@@ -135,7 +135,7 @@ class Score(models.Model):
 
 class Answer(models.Model):
     game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
-    team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
+    # team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
     problem = models.ForeignKey(ProblemInGame, on_delete=models.DO_NOTHING)
     answer = models.CharField(max_length=100)
 

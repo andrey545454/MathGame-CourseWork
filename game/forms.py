@@ -10,7 +10,7 @@ from .models import *
 
 class RegisterForm(UserCreationForm):
     """
-    Форма для регистрация пользователя
+    Форма регистрации пользователя
     """
 
     first_name = forms.CharField(label=_('Имя'))

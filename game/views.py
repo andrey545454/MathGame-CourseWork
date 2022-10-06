@@ -26,7 +26,7 @@ def register(request):
             user = form.save()
             Player.objects.create(
                 user=user,
-                status=PlayerStatus.objects.get(name='Активный')
+                status=PlayerStatus.objects.get_or_create(name='Активный')
             ).save()
             login(request, user)
             return redirect('/')
@@ -278,4 +278,3 @@ def get_players_in_team(request, pk):
         return JsonResponse(data, safe=False)
     except Team.DoesNotExist:
         return JsonResponse({})
-
