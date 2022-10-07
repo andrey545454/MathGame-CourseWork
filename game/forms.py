@@ -60,21 +60,21 @@ class UpdateForm(UserChangeForm):
 #         }
 
 
-class AddPlayerForm(forms.Form):
-    """
-    Форма добавления пользователя в команду
-    """
-
-    username = forms.CharField(label=_('Логин игрока'))
-
-    def clean_username(self):
-        data = self.cleaned_data['username']
-        try:
-            User.objects.get(username=data)
-        except User.DoesNotExist:
-            raise ValidationError(_('Данный игрок не зарегистрирован в системе'))
-
-        return data
+# class AddPlayerForm(forms.Form):
+#     """
+#     Форма добавления пользователя в команду
+#     """
+#
+#     username = forms.CharField(label=_('Логин игрока'))
+#
+#     def clean_username(self):
+#         data = self.cleaned_data['username']
+#         try:
+#             User.objects.get(username=data)
+#         except User.DoesNotExist:
+#             raise ValidationError(_('Данный игрок не зарегистрирован в системе'))
+#
+#         return data
 
 
 # class RegToGameForm(forms.ModelForm):
