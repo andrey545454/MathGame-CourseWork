@@ -9,7 +9,7 @@ button.frm-btn:hover {
   border: 1px solid black; }
 
 a.frm-btn, button.frm-btn, input.frm-btn {
-  display: block;
+  display: inline-block;
   margin: 0 auto;
   line-height: 28pt;
   padding: 0 20px;
