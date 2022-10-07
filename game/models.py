@@ -118,7 +118,7 @@ class ProblemInGameAdmin(admin.ModelAdmin):
 class Participation(models.Model):
     game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
     # team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
-    users = models.ManyToManyField(Player)
+    user = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.id)
