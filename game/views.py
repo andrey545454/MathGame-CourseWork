@@ -26,7 +26,7 @@ def register(request):
             user = form.save()
             Player.objects.create(
                 user=user,
-                status=PlayerStatus.objects.get_or_create(name='Активный')
+                status=PlayerStatus.objects.get_or_create(name='Активный')[0]
             ).save()
             login(request, user)
             return redirect('/')
