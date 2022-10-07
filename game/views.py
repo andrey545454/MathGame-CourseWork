@@ -54,25 +54,24 @@ def reg_to_game(request, pk):
     """
     Страница с регистрацией на выбранную игру
     """
-    # try:
-    #     g = Game.objects.get(pk=pk)
-    #     cur_player = Player.objects.get(user=request.user)
-    #
-    #     if request.method == 'POST':
-    #         form = RegToGameForm(request.POST, initial={'game': g})
-    #
-    #         if form.is_valid():
-    #             if cur_player in form.cleaned_data['players']:
-    #                 participation = form.save()
-    #                 return redirect('/')
-    #             form.add_error('team', 'Вы должны быть капитаном той команды, которую выбрали!')
-    #     else:
-    #         form = RegToGameForm(initial={'game': g})
-    #
-    #     return render(request, 'game/reg_to_game.html', {'form': form})
-    #
-    # except Game.DoesNotExist:
-    #     return redirect('/')
+    try:
+        g = Game.objects.get(pk=pk)
+        cur_player = Player.objects.get(user=request.user)
+
+        if request.method == 'POST':
+            form = RegToGameForm(request.POST, initial={'game': g})
+
+            if form.is_valid():
+                if cur_player in form.cleaned_data['players']:
+                    form.save()
+                    return redirect('/')
+        else:
+            form = RegToGameForm(initial={'game': g})
+
+        return render(request, 'game/reg_to_game.html', {'form': form})
+
+    except Game.DoesNotExist:
+        return redirect('/')
 
 
 # @login_required

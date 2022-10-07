@@ -77,19 +77,17 @@ class AddPlayerForm(forms.Form):
         return data
 
 
-class RegToGameForm(forms.ModelForm):
-    """
-    Форма регистрации команды в игру
-    """
-
-    # team = forms.ChoiceField(label=_('Команда'), widget=forms.Select(attrs={'id': 'team'}))
-    players = forms.MultipleChoiceField(label=_('Игроки'), widget=forms.SelectMultiple(attrs={'id': 'users'}))
-
-    class Meta:
-        model = Participation
-        fields = ['game',
-                  # 'team',
-                  'players']
-        widgets = {
-            'game': forms.HiddenInput(),
-        }
+# class RegToGameForm(forms.ModelForm):
+#     """
+#     Форма регистрации команды в игру
+#     """
+#
+#     team = forms.ChoiceField(label=_('Команда'), widget=forms.Select(attrs={'id': 'team'}))
+#     players = forms.MultipleChoiceField(label=_('Игроки'), widget=forms.SelectMultiple(attrs={'id': 'users'}))
+#
+#     class Meta:
+#         model = Participation
+#         fields = ['game', 'team', 'players']
+#         widgets = {
+#             'game': forms.HiddenInput(),
+#         }
