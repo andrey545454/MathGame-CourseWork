@@ -145,5 +145,10 @@ class Answer(models.Model):
     problem = models.ForeignKey(ProblemInGame, on_delete=models.DO_NOTHING)
     answer = models.CharField(max_length=100)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['game', 'player', 'problem'], name='unique_answer_from_player')
+        ]
+
     def __str__(self):
         return str(self.id)
