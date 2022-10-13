@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>{{game_title}}</title>
+{% endblock %}
+
+{% block content %}
+    <form method="POST" class="frm">
+        {% csrf_token %}
+        {% for problem, field in probs_and_fields %}
+            <h2>Задача №{{ forloop.counter }}</h2>
+            <p class="text-break">{{ problem.problem.description|linebreaksbr }}</p>
+            {{ field|as_crispy_field }}
+        {% endfor %}
+        <button type="submit" class="frm-btn">Сохранить ответы</button>
+    </form>
+{% endblock %}

@@ -1,8 +1,5 @@
 from django import forms
-from django.contrib.auth import authenticate, get_user_model, password_validation
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
@@ -91,3 +88,45 @@ class UpdateForm(UserChangeForm):
 #         widgets = {
 #             'game': forms.HiddenInput(),
 #         }
+
+
+class AnswerForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.game = kwargs.pop('game')
+        self.player = kwargs.pop('player')
+        self.problems = kwargs.pop('problems')
+        super().__init__(*args, **kwargs)
+
+        for i, problem in enumerate(self.problems):
+
+            try:
+                ans = Answer.objects.get(
+                    game=self.game,
+                    player=self.player,
+                    problem=problem,
+                )
+
+                self.fields[f'answer_{i}'] = forms.CharField(
+                    required=False,
+                    label=_(f'Ответ на задачу {i + 1}'),
+                    max_length=100,
+                    initial=ans.answer
+                )
+
+            except Answer.DoesNotExist:
+                self.fields[f'answer_{i}'] = forms.CharField(
+                    required=False,
+                    label=_(f'Ответ на задачу {i+1}'),
+                    max_length=100
+                )
+
+    def save(self):
+        for i in range(len(self.problems)):
+            obj, created = Answer.objects.update_or_create(
+                game=self.game,
+                player=self.player,
+                problem=self.problems[i],
+                defaults={
+                    'answer': self.cleaned_data[f'answer_{i}']
+                }
+            )

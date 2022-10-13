@@ -104,7 +104,7 @@ class ProblemInGame(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['game', 'problem', 'pos'], name='unique_prob_in_game')
+            models.UniqueConstraint(fields=['game', 'pos'], name='unique_pos_game')
         ]
 
     def __str__(self):
@@ -118,7 +118,12 @@ class ProblemInGameAdmin(admin.ModelAdmin):
 class Participation(models.Model):
     game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
     # team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
+    player = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['game', 'player'], name='unique_player_in_game')
+        ]
 
     def __str__(self):
         return str(self.id)
@@ -136,6 +141,7 @@ class Score(models.Model):
 class Answer(models.Model):
     game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
     # team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
+    player = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
     problem = models.ForeignKey(ProblemInGame, on_delete=models.DO_NOTHING)
     answer = models.CharField(max_length=100)
 

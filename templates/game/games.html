@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block content %}
+    {% if message %}
+        <script>
+            alert('{{ message }}');
+        </script>
+    {% endif %}
+
     <div class="frm">
         <div class="card-body">
             <h1 class="card-title">Список игр</h1>
@@ -21,7 +27,11 @@
                             <td><strong>{{ game }}</strong></td>
                             <td>{{ game.start_time }}</td>
                             <td>{{ game.end_time }}</td>
-                            <td><a href="{% url 'reg_to_game' game.pk %}" class="frm-btn" role="button">Войти</a></td>
+                            {% if game in registered_games %}
+                            <td>
+                                <a href="{% url 'current_game' game.pk %}" class="frm-btn" role="button">Войти</a>
+                            </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     {% for game in not_started_games %}
@@ -29,7 +39,16 @@
                             <td><strong>{{ game }}</strong></td>
                             <td>{{ game.start_time }}</td>
                             <td>{{ game.end_time }}</td>
-                            <td><a href="{% url 'reg_to_game' game.pk %}" class="frm-btn" role="button">Зарегистрироваться</a></td>
+                            {% if game not in registered_games %}
+                            <td>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="submit" name="regBtn" value="Регистрация" class="frm-btn"/>
+                                    <input type="hidden" name="gameId" value={{game.pk}}>
+                                </form>
+                            </td>
+                            {% endif %}
+                            <!-- <td><a href="{#% url 'reg_to_game' game.pk %#}" class="frm-btn" role="button">Зарегистрироваться</a></td> -->
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -1,6 +1,9 @@
 from django.http import HttpResponse, JsonResponse
+from django.conf import settings
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
@@ -43,35 +46,98 @@ def games(request):
     g = Game.objects.filter(end_time__gte=now)
     started_g = g.filter(start_time__lt=now)
     not_started_g = g.filter(start_time__gte=now)
+    registered_g = set()
+
+    message = None
+
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+
+        game = not_started_g.get(pk=request.POST['gameId'])
+        cur_player = Player.objects.get(user=request.user)
+
+        if 'regBtn' in request.POST:
+            try:
+                Participation.objects.create(
+                    game=game,
+                    player=cur_player
+                ).save()
+                message = _('Поздравляю, вы зарегистрировались на игру')
+
+            except Game.DoesNotExist:
+                return redirect('/')
+
+            except IntegrityError:
+                return redirect('/')
+
+    if request.user.is_authenticated:
+        cur_player = Player.objects.get(user=request.user)
+        registered_g = g.filter(participation__player=cur_player)
 
     return render(request, 'game/games.html',
                   {'not_started_games': not_started_g,
-                   'started_games': started_g})
+                   'started_games': started_g,
+                   'registered_games': registered_g,
+                   'message': message})
 
 
 @login_required
-def reg_to_game(request, pk):
-    """
-    Страница с регистрацией на выбранную игру
-    """
+def current_game(request, pk):
     try:
-        g = Game.objects.get(pk=pk)
         cur_player = Player.objects.get(user=request.user)
+        game = Game.objects.get(pk=pk)
+        Participation.objects.get(game=game, player=cur_player)
+        problems = ProblemInGame.objects.filter(game=game).order_by('pos')
+
+        if not problems:
+            raise Http404()
 
         if request.method == 'POST':
-            form = RegToGameForm(request.POST, initial={'game': g})
-
+            form = AnswerForm(request.POST, game=game, player=cur_player, problems=problems)
             if form.is_valid():
-                if cur_player in form.cleaned_data['players']:
-                    form.save()
-                    return redirect('/')
+                form.save()
         else:
-            form = RegToGameForm(initial={'game': g})
+            form = AnswerForm(game=game, player=cur_player, problems=problems)
 
-        return render(request, 'game/reg_to_game.html', {'form': form})
+    except Player.DoesNotExist:
+        raise Http404()
 
     except Game.DoesNotExist:
-        return redirect('/')
+        raise Http404()
+
+    except Participation.DoesNotExist:
+        raise Http404()
+
+    return render(request,
+                  'game/answer_game.html',
+                  {'game_title': game.name,
+                   'probs_and_fields': zip(problems, form)})
+
+
+# @login_required
+# def reg_to_game(request, pk):
+#     """
+#     Страница с регистрацией на выбранную игру
+#     """
+#     try:
+#         g = Game.objects.get(pk=pk)
+#         cur_player = Player.objects.get(user=request.user)
+#
+#         if request.method == 'POST':
+#             form = RegToGameForm(request.POST, initial={'game': g})
+#
+#             if form.is_valid():
+#                 if cur_player in form.cleaned_data['players']:
+#                     form.save()
+#                     return redirect('/')
+#         else:
+#             form = RegToGameForm(initial={'game': g})
+#
+#         return render(request, 'game/reg_to_game.html', {'form': form})
+#
+#     except Game.DoesNotExist:
+#         return redirect('/')
 
 
 # @login_required
