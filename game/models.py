@@ -130,9 +130,15 @@ class Participation(models.Model):
 
 
 class Score(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING, unique=True)
+    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
+    player = models.ForeignKey(Player, on_delete=models.DO_NOTHING)
     # team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
     score = models.IntegerField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['game', 'player'], name='unique_score_for_player_in_game')
+        ]
 
     def __str__(self):
         return str(self.id)

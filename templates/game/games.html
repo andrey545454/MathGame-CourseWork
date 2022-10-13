@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+
     {% if message %}
         <script>
             alert('{{ message }}');
@@ -29,7 +30,7 @@
                             <td>{{ game.end_time }}</td>
                             {% if game in registered_games %}
                             <td>
-                                <a href="{% url 'current_game' game.pk %}" class="frm-btn" role="button">Войти</a>
+                                <a href="{% url 'answer_game' game.pk %}" class="frm-btn" role="button">Войти</a>
                             </td>
                             {% endif %}
                         </tr>
@@ -40,13 +41,15 @@
                             <td>{{ game.start_time }}</td>
                             <td>{{ game.end_time }}</td>
                             {% if game not in registered_games %}
-                            <td>
-                                <form action="" method="post">
-                                    {% csrf_token %}
-                                    <input type="submit" name="regBtn" value="Регистрация" class="frm-btn"/>
-                                    <input type="hidden" name="gameId" value={{game.pk}}>
-                                </form>
-                            </td>
+                                <td>
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" name="regBtn" value="Регистрация" class="frm-btn"/>
+                                        <input type="hidden" name="gameId" value={{game.pk}}>
+                                    </form>
+                                </td>
+                            {% else %}
+                                <td>Вы зарегистрированы</td>
                             {% endif %}
                             <!-- <td><a href="{#% url 'reg_to_game' game.pk %#}" class="frm-btn" role="button">Зарегистрироваться</a></td> -->
                         </tr>

@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 import json
+import itertools
 
 from .forms import *
 from .models import *
@@ -83,7 +84,12 @@ def games(request):
 
 
 @login_required
-def current_game(request, pk):
+def answer_game(request, pk):
+    """
+    Страница с формой для определенной игры
+    """
+    message = None
+
     try:
         time = timezone.now()
         cur_player = Player.objects.get(user=request.user)
@@ -104,6 +110,8 @@ def current_game(request, pk):
         else:
             form = AnswerForm(game=game, player=cur_player, problems=problems)
 
+        message = _('Ваши ответы сохранены! Можете покинуть данную страницу или изменить ответы до конца игры')
+
     except Player.DoesNotExist:
         raise Http404()
 
@@ -116,7 +124,8 @@ def current_game(request, pk):
     return render(request,
                   'game/answer_game.html',
                   {'game_title': game.name,
-                   'probs_and_fields': zip(problems, form)})
+                   'probs_and_fields': zip(problems, form),
+                   'message': message})
 
 
 # @login_required
@@ -315,7 +324,6 @@ def current_game(request, pk):
 #     teams = invs.filter(team__status__name='Активный')
 #     return render(request, 'team/invites.html', {'teams': teams})
 
-
 @login_required
 def profile(request):
     """
@@ -330,6 +338,57 @@ def profile(request):
     else:
         form = UpdateForm(instance=request.user)
     return render(request, 'profile.html', {'form': form, 'user': request.user})
+
+
+def results(request):
+    """
+    Страница со списком пройденных игр
+    """
+    now = timezone.now()
+    ended_g = Game.objects.filter(end_time__lt=now)
+
+    return render(request, 'game/results.html', {'ended_games': ended_g})
+
+
+def results_game(request, pk):
+    """
+    Страница с результатами игроков в данной игре
+    """
+    players = []
+
+    try:
+        game = Game.objects.get(pk=pk)
+        answers = itertools.groupby(Answer.objects.filter(game=game).order_by('problem__pos'), key=lambda q: q.player)
+        for player, group in answers:
+
+            try:
+                score = Score.objects.get(game=game, player=player)
+
+            except Score.DoesNotExist:
+                # Подсчёт очков по формуле
+                score = 0
+                k = 0
+                for i, answer_obj in enumerate(group):
+                    correct_answer = answer_obj.problem.problem.answer
+                    probably_answer = answer_obj.answer
+                    if probably_answer == correct_answer:
+                        score += 3+k
+                        k += 1
+                    else:
+                        k = 0
+
+                Score.objects.create(
+                    game=game,
+                    player=player,
+                    score=score
+                )
+
+            players.append((player, score))
+
+    except Game.DoesNotExist:
+        raise Http404()
+
+    return render(request, 'game/results_game.html', {'players': players})
 
 
 # @login_required

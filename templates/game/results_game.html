@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Результаты</title>
+{% endblock %}
+
+{% block content %}
+    <div class="frm">
+        <div class="card-body">
+            <h1 class="card-title">Список игроков</h1>
+            <table class="table">
+                <tr>
+                    <th class="col-5">Игрок</th>
+                    <th class="col-5">Очки</th>
+                </tr>
+                <tbody>
+                    {% for player, score in players %}
+                        <tr>
+                            <td><strong>{{ player }}</strong></td>
+                            <td>{{ score }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

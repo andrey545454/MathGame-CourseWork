@@ -7,6 +7,13 @@
 {% endblock %}
 
 {% block content %}
+
+    {% if message %}
+        <script>
+            alert('{{ message }}');
+        </script>
+    {% endif %}
+
     <form method="POST" class="frm">
         {% csrf_token %}
         {% for problem, field in probs_and_fields %}

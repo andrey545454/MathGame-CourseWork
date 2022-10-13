@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Результаты</title>
+{% endblock %}
+
+{% block content %}
+    <div class="frm">
+        <div class="card-body">
+            <h1 class="card-title">Список игр</h1>
+            <table class="table">
+                <tr>
+                    <th class="col-4">Игра</th>
+                    <th class="col-2">Время начала</th>
+                    <th class="col-2">Время окончания</th>
+                    <th class="col-2"></th>
+                </tr>
+                <tbody>
+                    {% for game in ended_games %}
+                        <tr>
+                            <td><strong>{{ game }}</strong></td>
+                            <td>{{ game.start_time }}</td>
+                            <td>{{ game.end_time }}</td>
+                            <td>
+                                <a href="{% url 'results_game' game.pk %}" class="frm-btn" role="button">Результаты</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
