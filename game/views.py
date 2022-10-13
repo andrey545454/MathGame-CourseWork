@@ -107,10 +107,9 @@ def answer_game(request, pk):
             form = AnswerForm(request.POST, game=game, player=cur_player, problems=problems)
             if form.is_valid():
                 form.save()
+                message = _('Ваши ответы сохранены! Можете покинуть данную страницу или изменить ответы до конца игры')
         else:
             form = AnswerForm(game=game, player=cur_player, problems=problems)
-
-        message = _('Ваши ответы сохранены! Можете покинуть данную страницу или изменить ответы до конца игры')
 
     except Player.DoesNotExist:
         raise Http404()
@@ -385,6 +384,8 @@ def results_game(request, pk):
                 )
 
             players.append((player, score))
+
+        players.sort(key=lambda x: x[1], reverse=True)
 
     except Game.DoesNotExist:
         raise Http404()
