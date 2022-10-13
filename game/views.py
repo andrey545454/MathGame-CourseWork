@@ -362,7 +362,8 @@ def results_game(request, pk):
         for player, group in answers:
 
             try:
-                score = Score.objects.get(game=game, player=player)
+                score_obj = Score.objects.get(game=game, player=player)
+                score = score_obj.score
 
             except Score.DoesNotExist:
                 # Подсчёт очков по формуле
