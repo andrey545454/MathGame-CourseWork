@@ -357,8 +357,13 @@ def results_game(request, pk):
 
     try:
         game = Game.objects.get(pk=pk)
-        answers = itertools.groupby(Answer.objects.filter(game=game).order_by('problem__pos'), key=lambda q: q.player)
-        for player, group in answers:
+        answers = Answer.objects.filter(game=game).order_by('problem__pos')
+
+        answers_d = {}
+        for answer in answers:
+            answers_d[answer.player] = answers_d.get(answer.player, [])+[answer]
+
+        for player in answers_d:
 
             try:
                 score_obj = Score.objects.get(game=game, player=player)
@@ -368,7 +373,7 @@ def results_game(request, pk):
                 # Подсчёт очков по формуле
                 score = 0
                 k = 0
-                for i, answer_obj in enumerate(group):
+                for i, answer_obj in enumerate(answers_d[player]):
                     correct_answer = answer_obj.problem.problem.answer
                     probably_answer = answer_obj.answer
                     if probably_answer == correct_answer:
