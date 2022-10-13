@@ -17,6 +17,9 @@ from .models import *
 
 
 def index(request):
+    """
+    Главная страница
+    """
     return render(request, 'index.html')
 
 
