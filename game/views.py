@@ -85,6 +85,7 @@ def games(request):
 @login_required
 def current_game(request, pk):
     try:
+        time = timezone.now()
         cur_player = Player.objects.get(user=request.user)
         game = Game.objects.get(pk=pk)
         Participation.objects.get(game=game, player=cur_player)
@@ -92,6 +93,9 @@ def current_game(request, pk):
 
         if not problems:
             raise Http404()
+
+        if time > game.end_time:
+            return redirect('/')
 
         if request.method == 'POST':
             form = AnswerForm(request.POST, game=game, player=cur_player, problems=problems)
