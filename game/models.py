@@ -130,7 +130,7 @@ class Participation(models.Model):
 
 
 class Score(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
+    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING, unique=True)
     # team = models.ForeignKey(Team, on_delete=models.DO_NOTHING)
     score = models.IntegerField()
 
