@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% load crispy_forms_tags %}
 
@@ -15,6 +16,12 @@
     {% endif %}
 
     <form method="POST" class="frm">
+        <span>Оставшееся время: </span>
+        <div id="timer"></div>
+        <script src="{% static 'js/timer.js' %}"
+                defer
+                data-end_time="{{ end_time }}"
+        ></script>
         {% csrf_token %}
         {% for problem, field in probs_and_fields %}
             <h2>Задача №{{ forloop.counter }}</h2>

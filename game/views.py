@@ -94,16 +94,16 @@ def answer_game(request, pk):
     message = None
 
     try:
-        time = timezone.now()
         cur_player = Player.objects.get(user=request.user)
         game = Game.objects.get(pk=pk)
+        remaining_time = game.end_time-timezone.now()
         Participation.objects.get(game=game, player=cur_player)
         problems = ProblemInGame.objects.filter(game=game).order_by('pos')
 
         if not problems:
             raise Http404()
 
-        if time > game.end_time:
+        if remaining_time.total_seconds() < 0:
             return redirect('/')
 
         if request.method == 'POST':
@@ -127,6 +127,7 @@ def answer_game(request, pk):
                   'game/answer_game.html',
                   {'game_title': game.name,
                    'probs_and_fields': zip(problems, form),
+                   'end_time': game.end_time.isoformat(),
                    'message': message})
 
 
